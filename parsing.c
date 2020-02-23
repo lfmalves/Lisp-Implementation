@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "mpc.h"
 #include <editline/readline.h> //sudo apt-get install libedit-dev
 #include <editline/history.h>
 
