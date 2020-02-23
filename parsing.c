@@ -1,6 +1,6 @@
+#include "mpc.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "mpc.h"
 #include <editline/readline.h> //sudo apt-get install libedit-dev
 #include <editline/history.h>
 
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     number   : /-?[0-9]+/ ;                             \
     operator : '+' | '-' | '*' | '/' ;                  \
     expr     : <number> | '(' <operator> <expr>+ ')' ;  \
-    lispy    : /^/ <operator> <expr>+ /$/ ;             \
+    poorlisp    : /^/ <operator> <expr>+ /$/ ;             \
   ",
             Number, Operator, Expr, Poorlisp);
 
@@ -25,7 +25,14 @@ int main(int argc, char** argv) {
   while (1) {
     char* input = readline("poorlisp> ");
     add_history(input);
-    printf("Spitting back %s\n", input);
+    mpc_result_t r;
+    if (mpc_parse("<stdin>", input, Poorlisp, &r)) {
+      mpc_ast_print(r.output);
+      mpc_ast_delete(r.output);
+    } else {
+      mpc_err_print(r.error);
+      mpc_err_delete(r.error);
+    }
     free(input);
   }
 
