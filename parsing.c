@@ -3,10 +3,16 @@
 /*********************LISP INTERPRETER POORLISP********************************/
 /******************************************************************************/
 /******************************************************************************/
+
+/*
+  mandatory dependency: sudo apt-get install libedit-dev
+  compile command: cc -std=c99 -Wall parsing.c mpc.c -ledit -lm -o parsing
+*/
+
 #include "mpc.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <editline/readline.h> //sudo apt-get install libedit-dev
+#include <editline/readline.h>
 #include <editline/history.h>
 
 enum { LERR_DIV_ZERO, LERR_BAD_OP, LERR_BAD_NUM };
