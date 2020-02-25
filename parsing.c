@@ -17,7 +17,7 @@
 
 enum { LERR_DIV_ZERO, LERR_BAD_OP, LERR_BAD_NUM };
 
-enum{ LVAL_NUM, LVAL_ERR };
+enum{ LVAL_NUM, LVAL_ERR, LVAL_SYM, LVAL_SEXPR };
 
 typedef struct {
   int type;
