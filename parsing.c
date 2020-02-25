@@ -107,7 +107,7 @@ void lval_expr_print(lval* v, char open, char close) {
 }
 
 void lval_print(lval* v) {
-  switch (v.type) {
+  switch (v->type) {
   case LVAL_NUM: printf("%li", v->num); break;
   case LVAL_ERR: printf("Error: %s", v->err); break;
   case LVAL_SYM: printf("%s", v->sym); break;
@@ -119,7 +119,7 @@ void lval_println(lval* v) { lval_print(v); putchar('\n'); }
 
 lval* builtin_op(lval* a, char* op) {
   for (int i = 0; i < a->count; i++) {
-    if (a->cell[i]->type != LVAL_num) {
+    if (a->cell[i]->type != LVAL_NUM) {
       lval_del(a);
       return lval_err("Cannot operate on non-number!");
     }
@@ -218,8 +218,9 @@ int main(int argc, char** argv) {
     add_history(input);
     mpc_result_t r;
     if (mpc_parse("<stdin>", input, Poorlisp, &r)) {
-      lval result = eval(r.output);
-      lval_println(result);
+      lval* x = lval_eval(lval_read(r.output));
+      lval_println(x);
+      lval_del(x);
       mpc_ast_delete(r.output);
     } else {
       mpc_err_print(r.error);
