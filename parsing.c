@@ -41,6 +41,22 @@ lval* lval_err(char* m) {
   return v;
 }
 
+lval* lval_sym(char* s) {
+  lval* v = malloc(sizeof(lval));
+  v->type = LVAL_SYM;
+  v->sym = malloc(strlen(s) + 1);
+  strcpy(v->sym, s);
+  return v;
+}
+
+lval* lval_sexpr(void) {
+  lval* v = malloc(sizeof(lval));
+  v->type = LVAL_SEXPR;
+  v->count = 0;
+  v->cell = NULL;
+  return v;
+}
+
 void lval_print(lval v) {
   switch (v.type) {
   case LVAL_NUM: printf("%li", v.num); break;
