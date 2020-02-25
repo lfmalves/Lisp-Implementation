@@ -79,18 +79,20 @@ lval eval(mpc_ast_t* t) {
 
 int main(int argc, char** argv) {
   mpc_parser_t* Number = mpc_new("number");
-  mpc_parser_t* Operator = mpc_new("operator");
+  mpc_parser_t* Symbol = mpc_new("symbol");
+  mpc_parser_t* Sexpr = mpc_new("sexpr");
   mpc_parser_t* Expr = mpc_new("expr");
   mpc_parser_t* Poorlisp = mpc_new("poorlisp");
 
   mpca_lang(MPCA_LANG_DEFAULT,
-  "                                                     \
-    number   : /-?[0-9]+/ ;                             \
-    operator : '+' | '-' | '*' | '/' ;                  \
-    expr     : <number> | '(' <operator> <expr>+ ')' ;  \
-    poorlisp    : /^/ <operator> <expr>+ /$/ ;             \
+  " \
+    number   : /-?[0-9]+/ ; \
+    symbol : '+' | '-' | '*' | '/' ; \
+    sexpr : '(' <expr>* ')' ; \
+    expr     : <number> | <symbol> | <sexpr> ; \
+    poorlisp    : /^/ <expr>* /$/ ; \
   ",
-            Number, Operator, Expr, Poorlisp);
+            Number, Symbol, Sexpr, Expr, Poorlisp);
 
   puts("PoorLisp Version 0.0.1");
   puts("Press Ctrl+c to Exit\n");
@@ -110,6 +112,6 @@ int main(int argc, char** argv) {
     free(input);
   }
 
-  mpc_cleanup(4, Number, Operator, Expr, Poorlisp);
+  mpc_cleanup(5, Number, Symbol, Sexpr, Expr, Poorlisp);
   return 0;
 }
